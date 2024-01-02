@@ -1,10 +1,13 @@
 const express = require("express");
+const app = express();
 const path = require("path");
 var morgan = require("morgan");
 const handlebars = require("express-handlebars");
-const app = express();
 const port = 3005;
 
+const route = require("./route");
+
+// config static files
 app.use(express.static(path.join(__dirname, "public")));
 
 // HTTP Logger
@@ -18,11 +21,14 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
+
 app.set("views", path.join(__dirname, "resources/views"));
 
 app.get("/", (req, res) => {
   res.render("home");
 });
+
+route(app);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
