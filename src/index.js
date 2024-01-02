@@ -5,8 +5,12 @@ const handlebars = require("express-handlebars");
 const app = express();
 const port = 3005;
 
+app.use(express.static(path.join(__dirname, "public")));
+
+// HTTP Logger
 app.use(morgan("combined"));
 
+// Template engine
 app.engine(
   "hbs",
   handlebars.engine({
