@@ -1,9 +1,12 @@
 const express = require("express");
+var morgan = require("morgan");
+const cors = require("cors");
 const app = express();
 const path = require("path");
-var morgan = require("morgan");
 const handlebars = require("express-handlebars");
 const port = 3005;
+const db = require("./config/db");
+db.connect();
 
 const route = require("./route");
 
@@ -21,12 +24,12 @@ app.engine(
   })
 );
 app.set("view engine", "hbs");
-
 app.set("views", path.join(__dirname, "resources/views"));
 
-app.get("/", (req, res) => {
-  res.render("home");
-});
+app.use(cors());
+// app.get("/", (req, res) => {
+//   res.render("home");
+// });
 
 route(app);
 

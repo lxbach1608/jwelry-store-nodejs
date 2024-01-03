@@ -1,6 +1,9 @@
+const Product = require("../models/Product");
+
 class ProductController {
-  index(req, res) {
-    res.json("123");
+  async index(req, res) {
+    const instance = await Product.find({});
+    res.json({ data: instance });
   }
 }
 
