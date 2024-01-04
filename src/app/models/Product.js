@@ -12,7 +12,7 @@ const ProductSchema = new Schema(
     price: { type: Number },
     size: { type: Number },
     color: { type: Number },
-    category: { type: Number, default: null },
+    category: { type: String, default: null },
     slug: { type: String, slug: "name" },
   },
   {
