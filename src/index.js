@@ -27,9 +27,9 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "resources/views"));
 
 app.use(cors());
-// app.get("/", (req, res) => {
-//   res.render("home");
-// });
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 route(app);
 
