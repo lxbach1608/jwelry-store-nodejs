@@ -8,7 +8,7 @@ const ProductSchema = new Schema(
   {
     _id: { type: Number },
     name: { type: String },
-    decs: { type: String, default: "" },
+    desc: { type: String, default: "" },
     price: { type: Number },
     size: { type: Number },
     color: { type: Number },
