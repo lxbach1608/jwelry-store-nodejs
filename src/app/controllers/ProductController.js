@@ -6,7 +6,9 @@ class ProductController {
     const instance = await ProductSchema.find({});
 
     const data = instance.filter((product, index, self) => {
-      return index === self.findIndex((o) => o["slug"] === product["slug"]);
+      return (
+        index === self.findIndex((o) => o["category"] === product["category"])
+      );
     });
 
     res.json({ data });
@@ -21,10 +23,13 @@ class ProductController {
 
   // [GET] /products/categories/:slug
   async productByCategory(req, res) {
-    const instance = await ProductSchema.find({ category: req.params.slug });
+    const instance = await ProductSchema.aggregate([
+      { $match: { category: req.params.slug } },
+      { $group: { _id: "$slug", doc: { $first: "$$ROOT" } } },
+    ]);
 
-    const data = instance.filter((product, index, self) => {
-      return index === self.findIndex((o) => o["slug"] === product["slug"]);
+    const data = instance.map((item) => {
+      return { ...item.doc, category: item.doc.category.replace("-", " ") };
     });
 
     res.json({ data });
