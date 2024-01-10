@@ -13,7 +13,11 @@ class CategoryController {
 
       instances.forEach((category) => {
         if (item._doc._id.toHexString() === category.parentId) {
-          child.push({ name: category.name, slug: category._doc.slug });
+          child.push({
+            name: category.name,
+            slug: category._doc.slug,
+            children: null,
+          });
         }
       });
 
@@ -23,7 +27,6 @@ class CategoryController {
         children: child.length > 0 ? child : null,
       });
     });
-    // console.log(data);
 
     res.json({ data });
   }
