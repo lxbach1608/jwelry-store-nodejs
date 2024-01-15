@@ -9,7 +9,7 @@ const Information = new Schema({
   phoneNumber: { type: String, default: "" },
   addressLine: { type: String, default: "" },
   city: { type: String, default: "" },
-  region: { type: String, default: "" },
+  country: { type: String, default: "" },
 });
 
 module.exports = mongoose.model("Information", Information);

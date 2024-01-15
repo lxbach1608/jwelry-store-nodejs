@@ -5,6 +5,7 @@ const jwt = require("../app/middlewares/JWTMiddleware");
 const SiteController = require("../app/controllers/SiteController");
 
 router.get("/checkExistCookie", jwt.checkExistCookie);
+router.get("/logout", jwt.logout);
 // router.get("/", SiteController.home);
 // router.get("/login", SiteController.login);
 // router.get("/profile", SiteController.profile);

@@ -27,12 +27,21 @@ const verify = (token) => {
   return decoded;
 };
 
+// [GET] /checkExistCookie
 const checkExistCookie = (req, res, next) => {
-  const isExist = req.cookies.jwt;
+  const token = req.cookies.jwt;
+
+  const data = verify(token);
 
   res.status(200).json({
-    data: isExist,
+    data,
   });
 };
 
-module.exports = { create, verify, checkExistCookie };
+// [GET] /logout
+const logout = (req, res) => {
+  res.clearCookie("jwt");
+  res.end();
+};
+
+module.exports = { create, verify, checkExistCookie, logout };

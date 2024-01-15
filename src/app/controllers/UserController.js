@@ -1,5 +1,7 @@
 const UserSchema = require("../models/User");
+const RoleSchema = require("../models/Role");
 const InformationSchema = require("../models/Information");
+const jwt = require("../middlewares/JWTMiddleware");
 
 class UserController {
   // [POST] /users/user
@@ -19,21 +21,25 @@ class UserController {
     }
   }
 
-  // [GET] /users/:email/information
-  async information(req, res) {
-    const information = await InformationSchema.findOne({
-      username: req.param,
-    });
-
-    res.json({ data: information });
-  }
-
   // [POST] /users/store
   store(req, res) {
     const user = new UserSchema(req.body);
     user.save();
 
     res.status(201).json({ status: "create successfully" });
+  }
+
+  // [GET] /users/information
+  async information(req, res) {
+    const token = req.cookies.jwt;
+
+    const data = jwt.verify(token);
+
+    if (data) {
+      res.json({ data: information });
+    } else {
+      res.json({ data: null });
+    }
   }
 }
 

@@ -3,6 +3,9 @@ const jwt = require("../middlewares/JWTMiddleware");
 const ColorSchema = require("../models/Color");
 const SizeSchema = require("../models/Size");
 const UserSchema = require("../models/User");
+const InformationSchema = require("../models/Information");
+
+const { mongoosesToObject } = require("../../utils/mongoose");
 
 class SiteController {
   // [GET] /
@@ -10,14 +13,23 @@ class SiteController {
     res.render("home");
   }
 
-  // [GET] /login
-  // login(req, res) {
-  //   res.render("login");
-  // }
-
   // [GET] /profile
   profile(req, res) {
     res.render("profile");
+  }
+
+  // [GET] /sites/colors
+  async getColors(req, res, next) {
+    const instance = await ColorSchema.find();
+
+    res.json({ data: instance });
+  }
+
+  // [GET] /sites/sizes
+  async getSizes(req, res, next) {
+    const instance = await SizeSchema.find();
+
+    res.json({ data: instance });
   }
 
   // [POST] /login
@@ -31,8 +43,12 @@ class SiteController {
     });
 
     if (user) {
+      const information = await InformationSchema.findOne({
+        email,
+      });
+
       let data = {
-        email: req.body.email,
+        ...mongoosesToObject(information),
         roles: [1, 2, 3],
       };
 
@@ -49,20 +65,6 @@ class SiteController {
         data: "Account not found",
       });
     }
-  }
-
-  // [GET] /sites/colors
-  async getColors(req, res, next) {
-    const instance = await ColorSchema.find();
-
-    res.json({ data: instance });
-  }
-
-  // [GET] /sites/sizes
-  async getSizes(req, res, next) {
-    const instance = await SizeSchema.find();
-
-    res.json({ data: instance });
   }
 
   // [POST] sites/color
