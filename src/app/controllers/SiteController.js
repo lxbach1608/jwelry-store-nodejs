@@ -52,7 +52,11 @@ class SiteController {
         roles: [1, 2, 3],
       };
 
+      delete data._id;
+
       const token = jwt.create(data);
+
+      res.clearCookie("jwt");
 
       res.cookie("jwt", token, {
         httpOnly: true,

@@ -3,6 +3,8 @@ const RoleSchema = require("../models/Role");
 const InformationSchema = require("../models/Information");
 const jwt = require("../middlewares/JWTMiddleware");
 
+const { mongoosesToObject } = require("../../utils/mongoose");
+
 class UserController {
   // [POST] /users/user
   async index(req, res) {
@@ -29,17 +31,26 @@ class UserController {
     res.status(201).json({ status: "create successfully" });
   }
 
-  // [GET] /users/information
-  async information(req, res) {
-    const token = req.cookies.jwt;
+  // [put] /users/information/:email/update
+  async updateInformation(req, res) {
+    const email = req.params;
 
-    const data = jwt.verify(token);
+    const result = await InformationSchema.findOneAndUpdate(email, req.body, {
+      new: true,
+    });
 
-    if (data) {
-      res.json({ data: information });
-    } else {
-      res.json({ data: null });
-    }
+    const data = mongoosesToObject(result);
+
+    delete data._id;
+
+    const token = jwt.create(data);
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      maxAge: +process.env.COOKIE_MAX_AGE,
+    });
+
+    res.status(200).json({ data });
   }
 }
 

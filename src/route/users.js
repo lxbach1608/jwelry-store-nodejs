@@ -5,6 +5,6 @@ const UserController = require("../app/controllers/UserController");
 
 router.post("/user", UserController.index);
 
-// router.post("/user", UserController.store);
+router.put("/information/:email/update", UserController.updateInformation);
 
 module.exports = router;
