@@ -1,9 +1,11 @@
 const jwt = require("../middlewares/JWTMiddleware");
+var nodemailer = require("nodemailer");
 
 const ColorSchema = require("../models/Color");
 const SizeSchema = require("../models/Size");
 const UserSchema = require("../models/User");
 const InformationSchema = require("../models/Information");
+const sendEmail = require("../services/emailService");
 
 const { mongoosesToObject } = require("../../utils/mongoose");
 
@@ -13,9 +15,20 @@ class SiteController {
     res.render("home");
   }
 
+  // [GET] /sendEmail
+  sendEmail(req, res) {
+    sendEmail();
+    res.end();
+  }
+
   // [GET] /profile
   profile(req, res) {
     res.render("profile");
+  }
+
+  // [GET] /email
+  email(req, res) {
+    res.render("email");
   }
 
   // [GET] /sites/colors
@@ -55,8 +68,6 @@ class SiteController {
       delete data._id;
 
       const token = jwt.create(data);
-
-      res.clearCookie("jwt");
 
       res.cookie("jwt", token, {
         httpOnly: true,
