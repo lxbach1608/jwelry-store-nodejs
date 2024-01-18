@@ -11,7 +11,6 @@ class ProductController {
 
     categories.forEach((category) => {
       if (category._doc.parentId === null) {
-        console.log(category._doc.parentId);
         return;
       }
 
@@ -25,8 +24,6 @@ class ProductController {
           });
         }
       });
-
-      console.log(newObj);
 
       data = [...data, ...newObj];
     });
@@ -81,6 +78,29 @@ class ProductController {
         category: item.doc.category.replace("-", " "),
         promotion: categoryResult.promotion,
       };
+    });
+
+    res.json({ data });
+  }
+
+  // [GET] /products/search?q
+
+  async search(req, res) {
+    const { q } = req.query;
+    const instance = await ProductSchema.find({
+      $or: [
+        { name: { $regex: q, $options: "i" } },
+        { slug: { $regex: q, $options: "i" } },
+      ],
+    });
+
+    const slugs = [...new Set(instance.map((item) => item.slug))];
+
+    let data = [];
+
+    slugs.forEach((slug) => {
+      let product = instance.find((item) => item.slug === slug);
+      data = [...data, product];
     });
 
     res.json({ data });

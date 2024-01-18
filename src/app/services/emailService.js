@@ -69,8 +69,6 @@ const sendEmail = async (products = []) => {
   )}</td>
 </tr>`;
 
-  console.log(lines.concat(summary));
-
   let html = `<!DOCTYPE html>
   <html lang="en">
   

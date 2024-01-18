@@ -7,6 +7,7 @@ router.post("/store", ProductController.store);
 
 router.get("/distinctProducts", ProductController.distinctProducts);
 router.get("/categories/:slug", ProductController.productByCategory);
+router.get("/search", ProductController.search);
 router.get("/:slug", ProductController.detail);
 router.get("/", ProductController.index);
 
